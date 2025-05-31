@@ -1,13 +1,18 @@
 import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AppartmentsModule } from './appartments/appartments.module';
 import { UsersModule } from './users/users.module';
-import { ScheduleModule } from './schedule/schedule.module';
-import { RoomModule } from './room/room.module';
+import { BookingModule } from './booking/booking.module';
+import { FlatModule } from './flat/flat.module';
 
 @Module({
-  imports: [AppartmentsModule, UsersModule, ScheduleModule, RoomModule],
+  imports: [
+    MongooseModule.forRoot('mongodb://localhost:27017/aigerus'),
+    UsersModule,
+    BookingModule,
+    FlatModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
