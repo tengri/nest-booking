@@ -1,10 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
 
-export type BookingDocument = Booking & Document;
+export type BookingDocument = BookingModel & Document;
 
-@Schema()
-export class Booking extends Document {
+@Schema({
+  timestamps: true,
+})
+export class BookingModel extends Document {
   @Prop()
   name: string;
 
@@ -24,4 +26,4 @@ export class Booking extends Document {
   comment: string;
 }
 
-export const BookingSchema = SchemaFactory.createForClass(Booking);
+export const BookingSchema = SchemaFactory.createForClass(BookingModel);
