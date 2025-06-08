@@ -33,6 +33,15 @@ export class BookingEntity {
 
   @Expose()
   comment: string;
+
+  @Expose()
+  price?: number;
+
+  @Expose()
+  createdAt: Date;
+
+  @Expose()
+  updatedAt: Date;
 }
 
 BookingSchema.set('toJSON', {

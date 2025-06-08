@@ -24,6 +24,9 @@ export class BookingModel extends Document {
 
   @Prop()
   comment: string;
+
+  @Prop({ required: false })
+  price: number;
 }
 
 export const BookingSchema = SchemaFactory.createForClass(BookingModel);

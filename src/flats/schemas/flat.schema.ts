@@ -18,6 +18,28 @@ export class FlatModel {
 
   @Prop({ default: Date.now })
   createdAt: Date;
+
+  @Prop({ required: true })
+  price: number;
+
+  @Prop({ required: true, default: [] })
+  photos: string[];
+
+  @Prop({ required: true })
+  address: string;
+
+  @Prop({ required: true })
+  residence: string;
+
+  @Prop({ required: true })
+  floor: number;
+  @Prop({ required: true })
+  totalFloors: number;
+  @Prop({ required: true })
+  overview: string;
+
+  @Prop({ required: true, default: [] })
+  tags: { name: string; icon?: string }[];
 }
 
 export const FlatSchema = SchemaFactory.createForClass(FlatModel);
