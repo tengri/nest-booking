@@ -6,7 +6,6 @@ import {
   IsObject,
   IsOptional,
   IsArray,
-  IsUrl,
 } from 'class-validator';
 
 export class UpdateFlatDto {
@@ -29,10 +28,6 @@ export class UpdateFlatDto {
   @IsString()
   @IsNotEmpty()
   address: string;
-
-  @IsUrl()
-  @IsNotEmpty()
-  photos: string[];
 
   @IsNumber()
   @IsNotEmpty()

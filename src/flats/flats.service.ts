@@ -47,4 +47,22 @@ export class FlatService {
       throw new NotFoundException('flat not found');
     }
   }
+
+  async addFile(
+    id: string,
+    url: string,
+    type: string,
+    fileName: string,
+  ): Promise<void> {
+    const res = await this.flatModel
+      .findByIdAndUpdate(
+        id,
+        { $push: { files: { url, type, fileName } } },
+        { new: true },
+      )
+      .exec();
+    if (!res) {
+      throw new NotFoundException('flat not found');
+    }
+  }
 }

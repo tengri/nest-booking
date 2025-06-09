@@ -1,8 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { Role } from '../../types';
 
-export type UserDocument = UserModel & Document;
+export type UserDocument = UserModel & Document<Types.ObjectId>;
 
 @Schema({
   timestamps: true,

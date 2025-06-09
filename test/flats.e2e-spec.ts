@@ -83,7 +83,6 @@ describe('FlatsController (e2e)', () => {
       name: 'Updated Flat',
     };
 
-    console.log('updateFlatDto: ', updateFlatDto);
     const updateResponse = await request(app.getHttpServer())
       .put(`/flats/${createdFlat.id}`)
       .send(updateFlatDto)

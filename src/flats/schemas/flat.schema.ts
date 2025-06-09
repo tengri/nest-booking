@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { FileModel } from 'src/files/schemas/file.schema';
 
 export type FlatDocument = FlatModel & Document;
 
@@ -23,7 +24,7 @@ export class FlatModel {
   price: number;
 
   @Prop({ required: true, default: [] })
-  photos: string[];
+  files: FileModel[];
 
   @Prop({ required: true })
   address: string;
@@ -33,10 +34,9 @@ export class FlatModel {
 
   @Prop({ required: true })
   floor: number;
+
   @Prop({ required: true })
   totalFloors: number;
-  @Prop({ required: true })
-  overview: string;
 
   @Prop({ required: true, default: [] })
   tags: { name: string; icon?: string }[];

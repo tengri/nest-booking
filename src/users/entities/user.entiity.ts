@@ -9,7 +9,7 @@ export class UserEntity {
   }
 
   @Exclude()
-  _id: ObjectId;
+  _id?: ObjectId;
 
   @Expose()
   @Transform(({ value }: { value: ObjectId }) => value.toString())
@@ -28,8 +28,7 @@ export class UserEntity {
 UserSchema.set('toJSON', {
   virtuals: true,
   transform: (_, ret: UserDocument) => {
-    ret.id = ret._id;
-    delete ret._id;
-    return ret;
+    const { _id, ...rest } = ret;
+    return { id: _id, ...rest };
   },
 });
