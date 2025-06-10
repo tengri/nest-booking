@@ -11,7 +11,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { FilesService } from './files.service';
 import { ValidationPipe } from '@nestjs/common';
 import { UploadFileDto } from './dto/upload-file.dto';
-import { FlatService } from 'src/flats/flats.service';
+import { FlatService } from '../flats/flats.service';
 
 @Controller('flats/:flatId/files')
 export class FilesController {
@@ -27,16 +27,18 @@ export class FilesController {
     @Body() uploadFileDto: UploadFileDto,
     @UploadedFile() file: Express.Multer.File,
     @Param('flatId') flatId: string,
-  ) {
-    const fileUrl = await this.filesService.uploadFile(file);
+  ): Promise<{ url: string; width: number; height: number }> {
+    const { url, width, height } = await this.filesService.uploadFile(file);
 
-    await this.flatsService.addFile(
+    await this.flatsService.addFile({
       flatId,
-      fileUrl.url,
-      uploadFileDto.type,
-      file.originalname,
-    );
+      url,
+      width,
+      height,
+      type: uploadFileDto.type,
+      originalName: file.originalname,
+    });
 
-    return fileUrl;
+    return { url, width, height };
   }
 }

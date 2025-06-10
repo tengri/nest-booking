@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsString } from 'class-validator';
-import { FileType } from 'src/types';
+import { FileType } from '../../types';
 
 export class UploadFileDto {
   @IsNotEmpty()

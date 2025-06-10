@@ -48,16 +48,29 @@ export class FlatService {
     }
   }
 
-  async addFile(
-    id: string,
-    url: string,
-    type: string,
-    fileName: string,
-  ): Promise<void> {
+  async addFile({
+    flatId,
+    url,
+    width,
+    height,
+    type,
+    originalName,
+  }: {
+    flatId: string;
+    url: string;
+    width: number;
+    height: number;
+    type: string;
+    originalName: string;
+  }): Promise<void> {
     const res = await this.flatModel
       .findByIdAndUpdate(
-        id,
-        { $push: { files: { url, type, fileName } } },
+        flatId,
+        {
+          $push: {
+            files: { url, type, fileName: originalName, width, height },
+          },
+        },
         { new: true },
       )
       .exec();

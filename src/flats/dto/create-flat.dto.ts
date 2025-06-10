@@ -40,6 +40,10 @@ export class CreateFlatDto {
   @IsNotEmpty({ message: 'Total floors is required' })
   totalFloors: number;
 
+  @IsNumber()
+  @IsNotEmpty({ message: 'Area is required' })
+  area: number;
+
   @IsArray({ message: 'Tags must be an array' })
   @IsOptional({ message: 'Tags can be optional' })
   tags: { name: string; icon?: string }[];

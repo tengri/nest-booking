@@ -38,6 +38,9 @@ export class FlatModel {
   @Prop({ required: true })
   totalFloors: number;
 
+  @Prop({ required: true })
+  area: number;
+
   @Prop({ required: true, default: [] })
   tags: { name: string; icon?: string }[];
 }

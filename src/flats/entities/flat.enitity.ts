@@ -45,6 +45,9 @@ export class FlatEntity {
   coordinates: { lat: number; lng: number };
 
   @Expose()
+  area: number;
+
+  @Expose()
   tags: { name: string; icon?: string }[];
 }
 

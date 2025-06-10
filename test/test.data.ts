@@ -20,6 +20,7 @@ export const testCreateFlatDto: CreateFlatDto = {
   tags: [{ name: 'Test Tag' }],
   floor: 1,
   totalFloors: 1,
+  area: 100,
 };
 
 const nextYear = new Date().getFullYear() + 1;
