@@ -16,6 +16,23 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/types": ["./src/types"],
+      "@/app": ["./src/app"],
+      "@/dto": ["./src/dto"],
+      "@/enums": ["./src/enums"],
+      "@/entities": ["./src/entities"],
+      "@/filters": ["./src/filters"],
+      "@/guards": ["./src/guards"],
+      "@/middlewares": ["./src/middlewares"],
+      "@/utils": ["./src/utils"],
+      "@/auth": ["./src/auth"],
+      "@/flats": ["./src/flats"],
+      "@/bookings": ["./src/bookings"],
+      "@/users": ["./src/users"],
+      "@/files": ["./src/files"],
+    }
   }
 }

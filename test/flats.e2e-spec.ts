@@ -69,19 +69,18 @@ describe('FlatsController (e2e)', () => {
     expect(flat).toHaveProperty('capacity', testCreateFlatDto.capacity);
   });
 
-  it('/flats (PUT)', async () => {
-    const response = await request(app.getHttpServer())
+  it('/flats/:id (PUT)', async () => {
+    const createdFlatResponse = await request(app.getHttpServer())
       .post('/flats')
       .send(testCreateFlatDto)
       .expect(201);
 
-    const createdFlat = response.body as FlatEntity;
+    const createdFlat = createdFlatResponse.body as FlatEntity;
 
     const updateFlatDto: UpdateFlatDto = {
+      ...testCreateFlatDto,
       id: createdFlat.id,
       name: 'Updated Flat',
-      description: 'Updated Description',
-      capacity: 2,
     };
 
     const updateResponse = await request(app.getHttpServer())

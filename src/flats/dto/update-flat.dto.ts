@@ -1,4 +1,12 @@
-import { IsNumber, IsString, IsNotEmpty, IsMongoId } from 'class-validator';
+import {
+  IsNumber,
+  IsString,
+  IsNotEmpty,
+  IsMongoId,
+  IsObject,
+  IsOptional,
+  IsArray,
+} from 'class-validator';
 
 export class UpdateFlatDto {
   @IsString()
@@ -16,4 +24,28 @@ export class UpdateFlatDto {
   @IsMongoId()
   @IsNotEmpty()
   id: string;
+
+  @IsString()
+  @IsNotEmpty()
+  address: string;
+
+  @IsNumber()
+  @IsNotEmpty()
+  price: number;
+
+  @IsString()
+  @IsNotEmpty()
+  residence: string;
+
+  @IsObject()
+  @IsOptional()
+  coordinates: { lat: number; lng: number };
+
+  @IsNumber()
+  @IsNotEmpty()
+  area: number;
+
+  @IsArray()
+  @IsOptional()
+  tags: { name: string; icon?: string }[];
 }

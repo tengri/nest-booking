@@ -4,6 +4,7 @@ import {
   IsDateString,
   IsOptional,
   IsMongoId,
+  IsNumber,
 } from 'class-validator';
 
 export class CreateBookingDto {
@@ -26,4 +27,8 @@ export class CreateBookingDto {
   @IsMongoId()
   @IsNotEmpty()
   flatId: string;
+
+  @IsNumber()
+  @IsOptional()
+  price?: number;
 }

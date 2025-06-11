@@ -12,9 +12,12 @@ import { UserEntity } from '../src/users/entities/user.entiity';
 
 import { FlatModel } from '../src/flats/schemas/flat.schema';
 import { FlatEntity } from 'src/flats/entities/flat.enitity';
-import { CreateBookingDto } from 'src/bookings/dto/create-booking.dto';
 import { BookingEntity } from 'src/bookings/entities/bookings.entitiy';
-import { testCreateUserDto, testCreateFlatDto } from './test.data';
+import {
+  testCreateUserDto,
+  testCreateFlatDto,
+  testCreateBookingDto,
+} from './test.data';
 import { UpdateBookingDto } from 'src/bookings/dto/update-booking.dto';
 
 describe('BookingController (e2e)', () => {
@@ -65,35 +68,27 @@ describe('BookingController (e2e)', () => {
   });
 
   it('/bookings (POST)', async () => {
-    const nextYear = new Date().getFullYear() + 1;
-    const createBookingDto: CreateBookingDto = {
-      startDate: `${nextYear}-06-05`,
-      endDate: `${nextYear}-06-06`,
-      userId: testUserEntity.id,
-      flatId: testFlatEntity.id,
-    };
-
     const response = await request(app.getHttpServer())
       .post('/bookings')
-      .send(createBookingDto)
+      .send(testCreateBookingDto)
       .expect(201);
 
     const createdBooking = response.body as BookingEntity;
     expect(createdBooking).toHaveProperty('id');
-    expect(createdBooking).toHaveProperty('userId', createBookingDto.userId);
-    expect(createdBooking).toHaveProperty('flatId', createBookingDto.flatId);
+    expect(createdBooking).toHaveProperty(
+      'userId',
+      testCreateBookingDto.userId,
+    );
+    expect(createdBooking).toHaveProperty(
+      'flatId',
+      testCreateBookingDto.flatId,
+    );
   });
 
   it('/bookings (GET)', async () => {
-    const nextYear = new Date().getFullYear() + 1;
-    const createBookingDto: CreateBookingDto = {
-      startDate: `${nextYear}-06-05`,
-      endDate: `${nextYear}-06-06`,
-      userId: testUserEntity.id,
-      flatId: testFlatEntity.id,
-    };
-
-    await request(app.getHttpServer()).post('/bookings').send(createBookingDto);
+    await request(app.getHttpServer())
+      .post('/bookings')
+      .send(testCreateBookingDto);
 
     const response = await request(app.getHttpServer())
       .get('/bookings')
@@ -105,28 +100,20 @@ describe('BookingController (e2e)', () => {
     expect(bookingsResponse.total).toBe(1);
     const booking: BookingEntity = bookingsResponse.data[0];
     expect(booking).toHaveProperty('id');
-    expect(booking).toHaveProperty('userId', testUserEntity.id);
-    expect(booking).toHaveProperty('flatId', testFlatEntity.id);
+    expect(booking).toHaveProperty('userId', testCreateBookingDto.userId);
+    expect(booking).toHaveProperty('flatId', testCreateBookingDto.flatId);
     expect(booking.startDate).toBe(
-      new Date(createBookingDto.startDate).toISOString(),
+      new Date(testCreateBookingDto.startDate).toISOString(),
     );
     expect(booking.endDate).toBe(
-      new Date(createBookingDto.endDate).toISOString(),
+      new Date(testCreateBookingDto.endDate).toISOString(),
     );
   });
 
   it('/bookings (GET:id)', async () => {
-    const nextYear = new Date().getFullYear() + 1;
-    const createBookingDto: CreateBookingDto = {
-      startDate: `${nextYear}-06-05`,
-      endDate: `${nextYear}-06-06`,
-      userId: testUserEntity.id,
-      flatId: testFlatEntity.id,
-    };
-
     const createBookingResponse = await request(app.getHttpServer())
       .post('/bookings')
-      .send(createBookingDto)
+      .send(testCreateBookingDto)
       .expect(201);
 
     const createdBooking = createBookingResponse.body as BookingEntity;
@@ -141,26 +128,19 @@ describe('BookingController (e2e)', () => {
     expect(bookingResponse).toHaveProperty('userId', createdBooking.userId);
     expect(bookingResponse).toHaveProperty('flatId', bookingResponse.flatId);
     expect(bookingResponse.startDate).toBe(
-      new Date(createBookingDto.startDate).toISOString(),
+      new Date(testCreateBookingDto.startDate).toISOString(),
     );
     expect(bookingResponse.endDate).toBe(
-      new Date(createBookingDto.endDate).toISOString(),
+      new Date(testCreateBookingDto.endDate).toISOString(),
     );
   });
 
   it('/bookings (PUT)', async () => {
     const nextYear = new Date().getFullYear() + 1;
 
-    const createBookingDto: CreateBookingDto = {
-      startDate: `${nextYear}-06-05`,
-      endDate: `${nextYear}-06-06`,
-      userId: testUserEntity.id,
-      flatId: testFlatEntity.id,
-    };
-
     const createBookingResponse = await request(app.getHttpServer())
       .post('/bookings')
-      .send(createBookingDto)
+      .send(testCreateBookingDto)
       .expect(201);
 
     const createdBooking = createBookingResponse.body as BookingEntity;
@@ -192,16 +172,10 @@ describe('BookingController (e2e)', () => {
 
   it('/bookings (DELETE:id)', async () => {
     const nextYear = new Date().getFullYear() + 1;
-    const createBookingDto: CreateBookingDto = {
-      startDate: `${nextYear}-06-05`,
-      endDate: `${nextYear}-06-06`,
-      userId: testUserEntity.id,
-      flatId: testFlatEntity.id,
-    };
 
     const response = await request(app.getHttpServer())
       .post('/bookings')
-      .send(createBookingDto)
+      .send(testCreateBookingDto)
       .expect(201);
 
     const createdBooking = response.body as BookingEntity;
