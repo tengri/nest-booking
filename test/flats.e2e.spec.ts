@@ -12,19 +12,24 @@ import { FlatModel } from '../src/flats/schemas/flat.schema';
 import { FlatEntity } from 'src/flats/entities/flat.enitity';
 
 import { testCreateFlatDto } from './test.data';
+import { UserModel } from '../src/users/schemas/user.schema';
 
 describe('FlatsController (e2e)', () => {
   let app: INestApplication;
   let flatModel: Model<FlatModel>;
-
+  let userModel: Model<UserModel>;
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();
+
     flatModel = moduleFixture.get<Model<FlatModel>>(
       getModelToken(FlatModel.name),
+    );
+    userModel = moduleFixture.get<Model<UserModel>>(
+      getModelToken(UserModel.name),
     );
     await app.init();
 
@@ -32,6 +37,8 @@ describe('FlatsController (e2e)', () => {
   });
 
   afterEach(async () => {
+    await flatModel.deleteMany({});
+    await userModel.deleteMany({});
     await app.close();
   });
 

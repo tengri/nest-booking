@@ -41,11 +41,12 @@ export class FlatService {
     return res.toJSON();
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: string): Promise<string> {
     const res = await this.flatModel.findByIdAndDelete(id).exec();
     if (!res) {
       throw new NotFoundException('flat not found');
     }
+    return id;
   }
 
   async addFile({

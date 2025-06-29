@@ -1,6 +1,8 @@
 module.exports = {
+  runInBand: true,
   moduleFileExtensions: ['js', 'json', 'ts'],
-  rootDir: 'src',
+  rootDir: './',
+  exclude: ['node_modules', 'dist', 'test'],
   testRegex: '.*\\.spec\\.ts$',
   transform: {
     '^.+\\.(t|j)s$': ['ts-jest', {

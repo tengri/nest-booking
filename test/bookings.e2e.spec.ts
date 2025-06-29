@@ -19,6 +19,7 @@ import {
   testCreateBookingDto,
 } from './test.data';
 import { UpdateBookingDto } from 'src/bookings/dto/update-booking.dto';
+import { ConfigService } from '@nestjs/config';
 
 describe('BookingController (e2e)', () => {
   let app: INestApplication;
@@ -31,6 +32,16 @@ describe('BookingController (e2e)', () => {
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
+      providers: [
+        {
+          provide: ConfigService,
+          useValue: {
+            get: {
+              MONGO_URI: 'mongodb://localhost:27017/aigerus-test-bookings',
+            },
+          },
+        },
+      ],
     }).compile();
 
     app = moduleFixture.createNestApplication();

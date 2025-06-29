@@ -3,8 +3,6 @@ import { path as rootPath } from 'app-root-path';
 import { ensureDir } from 'fs-extra';
 import * as sharp from 'sharp';
 
-console.log('sharp: ', sharp);
-
 class FileOperationError extends Error {
   constructor(message: string) {
     super(message);
