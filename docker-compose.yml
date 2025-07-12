@@ -7,5 +7,8 @@ services:
     restart: always
     ports:
       - 3000:3000
-    volumes:
-      - ./.env:/opt/aigerus-backend/.env
+    environment:
+      - MONGO_URI=mongodb+srv://ruslanamirovit:c5bvgWT4Ik7SEpH2@cluster0.bg8sv1a.mongodb.net/aigerus
+      - JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
+      - PORT=3000
+      - NODE_ENV=production
