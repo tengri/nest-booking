@@ -11,7 +11,6 @@ import {
   UsePipes,
 } from '@nestjs/common';
 import { FlatService } from './flats.service';
-import { FlatModel } from './schemas/flat.schema';
 import { CreateFlatDto } from './dto/create-flat.dto';
 import { UpdateFlatDto } from './dto/update-flat.dto';
 import { ListResponse } from 'src/types';
@@ -54,8 +53,7 @@ export class FlatController {
 
   @Delete(':id')
   @HttpCode(204)
-  async delete(@Param('id') id: string): Promise<void> {
-    await this.flatService.delete(id);
-    return;
+  async delete(@Param('id') id: string): Promise<string> {
+    return await this.flatService.delete(id);
   }
 }

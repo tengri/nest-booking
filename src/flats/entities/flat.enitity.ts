@@ -22,6 +22,33 @@ export class FlatEntity {
 
   @Expose()
   capacity: number;
+
+  @Expose()
+  photos: string[];
+
+  @Expose()
+  address: string;
+
+  @Expose()
+  price: number;
+
+  @Expose()
+  createdAt: Date;
+
+  @Expose()
+  updatedAt: Date;
+
+  @Expose()
+  residence: string;
+
+  @Expose()
+  coordinates: { lat: number; lng: number };
+
+  @Expose()
+  area: number;
+
+  @Expose()
+  tags: { name: string; icon?: string }[];
 }
 
 FlatSchema.set('toJSON', {

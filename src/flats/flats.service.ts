@@ -41,8 +41,40 @@ export class FlatService {
     return res.toJSON();
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: string): Promise<string> {
     const res = await this.flatModel.findByIdAndDelete(id).exec();
+    if (!res) {
+      throw new NotFoundException('flat not found');
+    }
+    return id;
+  }
+
+  async addFile({
+    flatId,
+    url,
+    width,
+    height,
+    type,
+    originalName,
+  }: {
+    flatId: string;
+    url: string;
+    width: number;
+    height: number;
+    type: string;
+    originalName: string;
+  }): Promise<void> {
+    const res = await this.flatModel
+      .findByIdAndUpdate(
+        flatId,
+        {
+          $push: {
+            files: { url, type, fileName: originalName, width, height },
+          },
+        },
+        { new: true },
+      )
+      .exec();
     if (!res) {
       throw new NotFoundException('flat not found');
     }

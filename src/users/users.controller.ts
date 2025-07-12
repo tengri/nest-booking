@@ -13,7 +13,6 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { UserModel } from './schemas/user.schema';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update.user.dto';
 import { ListResponse } from 'src/types';
@@ -59,8 +58,7 @@ export class UsersController {
 
   @Delete(':id')
   @HttpCode(204)
-  async delete(@Param('id') id: string): Promise<void> {
-    await this.usersService.delete(id);
-    return;
+  async delete(@Param('id') id: string): Promise<string> {
+    return await this.usersService.delete(id);
   }
 }

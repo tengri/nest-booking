@@ -55,8 +55,7 @@ export class BookingController {
 
   @Delete(':id')
   @HttpCode(204)
-  async delete(@Param('id') id: string): Promise<void> {
-    await this.bookingService.delete(id);
-    return;
+  async delete(@Param('id') id: string): Promise<string> {
+    return await this.bookingService.delete(id);
   }
 }
