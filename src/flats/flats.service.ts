@@ -4,12 +4,14 @@ import { Model } from 'mongoose';
 import { CreateFlatDto } from './dto/create-flat.dto';
 import { UpdateFlatDto } from './dto/update-flat.dto';
 import { FlatModel, FlatDocument } from './schemas/flat.schema';
+import { S3Service } from '../files/s3.service';
 
 @Injectable()
 export class FlatService {
   constructor(
     @InjectModel(FlatModel.name)
     private flatModel: Model<FlatDocument>,
+    private s3Service: S3Service,
   ) {}
 
   async findAll(): Promise<FlatModel[]> {
@@ -42,10 +44,23 @@ export class FlatService {
   }
 
   async delete(id: string): Promise<string> {
-    const res = await this.flatModel.findByIdAndDelete(id).exec();
-    if (!res) {
+    const flat = await this.flatModel.findById(id).exec();
+    if (!flat) {
       throw new NotFoundException('flat not found');
     }
+
+    // Delete all files from S3 before deleting the flat
+    if (flat.files && flat.files.length > 0) {
+      for (const file of flat.files) {
+        try {
+          await this.s3Service.deleteFile(file.url);
+        } catch (error) {
+          console.error(`Failed to delete file ${file.url} from S3:`, error);
+        }
+      }
+    }
+
+    await this.flatModel.findByIdAndDelete(id).exec();
     return id;
   }
 

@@ -72,7 +72,8 @@ describe('UsersController (e2e)', () => {
 
     const createUserResponse = await request(app.getHttpServer())
       .post('/users')
-      .send(newUserRequest);
+      .send(newUserRequest)
+      .expect(201);
 
     const createdUser = createUserResponse.body as UserEntity;
 

@@ -15,6 +15,8 @@ export interface JwtPayload {
 }
 
 export enum FileType {
-  PHOTO = 'photo',
+  IMAGE = 'image',
   VIDEO = 'video',
+  DOCUMENT = 'document',
+  OTHER = 'other',
 }

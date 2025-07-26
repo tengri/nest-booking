@@ -18,13 +18,7 @@ async function bootstrap() {
 
   SwaggerModule.setup('api', app, documentFactory);
 
-  app.enableCors({
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true,
-    maxAge: 3600,
-  });
+  app.enableCors('*');
 
   // Set body size limit to 50mb
   app.use((req: Request, res: Response, next: NextFunction) => {

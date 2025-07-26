@@ -21,8 +21,8 @@ export class FilesService {
     width: number;
     height: number;
   }> {
-    return new Promise(async (resolve, reject) => {
-      return await sharp(buffer)
+    return new Promise((resolve, reject) => {
+      sharp(buffer)
         .resize(1024)
         .webp({ quality: 80 })
         .toFile(filePath, (err, info: { width: number; height: number }) => {
