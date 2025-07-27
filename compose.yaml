@@ -2,6 +2,8 @@ version: '3.8'
 
 services:
   aigerus-backend:
+    env_file:
+      - .env
     image: aigerus-backend:latest
     container_name: aigerus-backend
     restart: always
@@ -15,3 +17,9 @@ services:
       - R2_SECRET_ACCESS_KEY=${R2_SECRET_ACCESS_KEY}
       - R2_BUCKET_NAME=${R2_BUCKET_NAME}
       - NODE_ENV=production
+    networks:
+      - aigerus-network
+
+networks:
+  aigerus-network:
+    external: true
