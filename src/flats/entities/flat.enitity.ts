@@ -1,5 +1,5 @@
 import { Exclude, Expose, Transform } from 'class-transformer';
-import { FlatDocument, FlatSchema } from '../schemas/flat.schema';
+import { FlatDocument, FlatModel, FlatSchema } from '../schemas/flat.schema';
 import { ObjectId } from 'mongodb';
 
 export class FlatEntity {
@@ -53,7 +53,7 @@ export class FlatEntity {
 
 FlatSchema.set('toJSON', {
   virtuals: true,
-  transform: (_, ret: FlatDocument) => {
+  transform: (_, ret: FlatModel) => {
     ret.id = ret._id;
     delete ret._id;
     return ret;

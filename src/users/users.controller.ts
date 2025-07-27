@@ -17,6 +17,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update.user.dto';
 import { ListResponse } from 'src/types';
 import { UserEntity } from './entities/user.entiity';
+import { UserModel } from './schemas/user.schema';
 
 @UseInterceptors(ClassSerializerInterceptor)
 @UsePipes(new ValidationPipe())
@@ -37,7 +38,7 @@ export class UsersController {
 
   @Get(':id')
   async findOneById(@Param('id') id: string): Promise<UserEntity> {
-    const user = await this.usersService.findOne(id);
+    const user: UserModel = await this.usersService.findOne(id);
     return new UserEntity(user);
   }
 

@@ -1,6 +1,5 @@
-import { Exclude, Expose, Transform } from 'class-transformer';
-import { UserDocument, UserSchema } from '../schemas/user.schema';
-import { ObjectId } from 'mongodb';
+import { Exclude, Expose } from 'class-transformer';
+import { UserSchema, UserDocument } from '../schemas/user.schema';
 import { Role } from '../../types';
 
 export class UserEntity {
@@ -9,10 +8,9 @@ export class UserEntity {
   }
 
   @Exclude()
-  _id?: ObjectId;
+  _id: string;
 
   @Expose()
-  @Transform(({ value }: { value: ObjectId }) => value.toString())
   id: string;
 
   @Exclude()
@@ -23,12 +21,19 @@ export class UserEntity {
 
   @Expose()
   role: Role;
+
+  @Expose()
+  createdAt?: Date;
+
+  @Expose()
+  updatedAt?: Date;
 }
 
 UserSchema.set('toJSON', {
   virtuals: true,
-  transform: (_, ret: UserDocument) => {
-    const { _id, ...rest } = ret;
-    return { id: _id, ...rest };
+  transform: (_, ret: Record<string, any>) => {
+    ret.id = ret._id;
+    delete ret._id;
+    return ret;
   },
 });
