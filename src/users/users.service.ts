@@ -13,7 +13,7 @@ export class UsersService {
     private readonly userModel: Model<UserDocument>,
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<UserModel> {
+  async create(createUserDto: CreateUserDto): Promise<Partial<UserDocument>> {
     const isUserExist = await this.userModel.findOne({
       email: createUserDto.email,
     });
@@ -31,7 +31,7 @@ export class UsersService {
     return users.map((user) => user.toJSON());
   }
 
-  async findOne(id: string): Promise<UserModel> {
+  async findOne(id: string): Promise<UserModel>  {
     const user = await this.userModel.findById(id).exec();
     if (!user) {
       throw new NotFoundException('User not found');
@@ -51,11 +51,11 @@ export class UsersService {
     return updatedUser.toJSON();
   }
 
-  async delete(id: string): Promise<UserModel> {
+  async delete(id: string): Promise<string> {
     const deletedUser = await this.userModel.findByIdAndDelete(id).exec();
     if (!deletedUser) {
       throw new NotFoundException('User not found');
     }
-    return deletedUser;
+    return id;
   }
 }

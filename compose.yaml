@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  aigerus-backend:
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aigerus-backend
+    restart: always
+    ports:
+      - 3000:3000
+    environment:
+      - NODE_ENV=production
+    networks:
+      - aigerus-network
+
+networks:
+  aigerus-network:
+    external: true

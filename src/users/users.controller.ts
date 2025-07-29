@@ -13,11 +13,11 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { UserModel } from './schemas/user.schema';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update.user.dto';
 import { ListResponse } from 'src/types';
 import { UserEntity } from './entities/user.entiity';
+import { UserModel } from './schemas/user.schema';
 
 @UseInterceptors(ClassSerializerInterceptor)
 @UsePipes(new ValidationPipe())
@@ -38,7 +38,7 @@ export class UsersController {
 
   @Get(':id')
   async findOneById(@Param('id') id: string): Promise<UserEntity> {
-    const user = await this.usersService.findOne(id);
+    const user: UserModel = await this.usersService.findOne(id);
     return new UserEntity(user);
   }
 
@@ -59,8 +59,7 @@ export class UsersController {
 
   @Delete(':id')
   @HttpCode(204)
-  async delete(@Param('id') id: string): Promise<void> {
-    await this.usersService.delete(id);
-    return;
+  async delete(@Param('id') id: string): Promise<string> {
+    return await this.usersService.delete(id);
   }
 }

@@ -41,6 +41,10 @@ export class UpdateFlatDto {
   @IsOptional()
   coordinates: { lat: number; lng: number };
 
+  @IsNumber()
+  @IsNotEmpty()
+  area: number;
+
   @IsArray()
   @IsOptional()
   tags: { name: string; icon?: string }[];

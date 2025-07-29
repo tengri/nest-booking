@@ -1,10 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { FileType } from 'src/types';
+import { FileType } from '../../types';
+import { Model } from 'mongoose';
 
 @Schema({
   timestamps: true,
 })
-export class FileModel {
+export class FileModel extends Model {
   @Prop({ required: false })
   fileName: string;
 

@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
 import { FilesService } from './files.service';
+import { S3Service } from './s3.service';
 import { FilesController } from './files.controller';
-import { FlatModel, FlatSchema } from 'src/flats/schemas/flat.schema';
-import { FlatService } from 'src/flats/flats.service';
+import { FlatModel, FlatSchema } from '../flats/schemas/flat.schema';
+import { FlatService } from '../flats/flats.service';
 import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
-  providers: [FilesService, FlatService],
+  providers: [FilesService, S3Service, FlatService],
   controllers: [FilesController],
   imports: [
     MongooseModule.forFeature([{ name: FlatModel.name, schema: FlatSchema }]),

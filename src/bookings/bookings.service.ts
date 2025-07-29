@@ -96,10 +96,11 @@ export class BookingService {
     return booking.toJSON();
   }
 
-  async delete(id: string): Promise<void> {
-    const Booking = await this.BookingModel.findByIdAndDelete(id).exec();
-    if (!Booking) {
+  async delete(id: string): Promise<string> {
+    const booking = await this.BookingModel.findByIdAndDelete(id).exec();
+    if (!booking) {
       throw new NotFoundException('Booking not found');
     }
+    return id;
   }
 }

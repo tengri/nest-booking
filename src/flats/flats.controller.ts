@@ -53,8 +53,7 @@ export class FlatController {
 
   @Delete(':id')
   @HttpCode(204)
-  async delete(@Param('id') id: string): Promise<void> {
-    await this.flatService.delete(id);
-    return;
+  async delete(@Param('id') id: string): Promise<string> {
+    return await this.flatService.delete(id);
   }
 }

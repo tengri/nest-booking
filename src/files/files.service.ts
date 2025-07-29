@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { nanoid } from 'nanoid';
 import { path as rootPath } from 'app-root-path';
-import { ensureDir, writeFile } from 'fs-extra';
+import { ensureDir } from 'fs-extra';
+import * as sharp from 'sharp';
 
 class FileOperationError extends Error {
   constructor(message: string) {
@@ -14,25 +14,53 @@ class FileOperationError extends Error {
 export class FilesService {
   constructor() {}
 
-  async uploadFile(file: Express.Multer.File): Promise<{ url: string }> {
+  async processImage(
+    buffer: Buffer,
+    filePath: string,
+  ): Promise<{
+    width: number;
+    height: number;
+  }> {
+    return new Promise((resolve, reject) => {
+      sharp(buffer)
+        .resize(1024)
+        .webp({ quality: 80 })
+        .toFile(filePath, (err, info: { width: number; height: number }) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve({ width: info.width, height: info.height });
+          }
+        });
+    });
+  }
+
+  async uploadFile(
+    file: Express.Multer.File,
+  ): Promise<{ url: string; width: number; height: number }> {
     const uploadDir: string = rootPath + '/uploads';
 
     try {
       await ensureDir(uploadDir);
-    } catch {
+    } catch (error) {
+      console.error('Error creating directory:', error);
       throw new FileOperationError('Failed to create upload directory');
     }
 
     try {
       const { buffer, originalname } = file;
-      const fileName = nanoid() + '-' + originalname;
+      const fileName =
+        Date.now() + '-' + originalname.replace(/\.[^/.]+$/, '.webp');
+
       const filePath = `${uploadDir}/${fileName}`;
-      await writeFile(filePath, buffer);
+
+      const { width, height } = await this.processImage(buffer, filePath);
 
       const url = `${process.env.UPLOADS_URL}/${fileName}`;
 
-      return { url };
-    } catch {
+      return { url, width, height };
+    } catch (error) {
+      console.error('Error uploading file:', error);
       throw new FileOperationError('Failed to upload file');
     }
   }

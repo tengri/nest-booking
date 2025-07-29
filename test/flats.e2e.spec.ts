@@ -7,24 +7,43 @@ import { AppModule } from '../src/app.module';
 import { getModelToken } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
-import { ListResponse } from 'src/types';
+import { FileType, ListResponse } from '../src/types';
 import { FlatModel } from '../src/flats/schemas/flat.schema';
 import { FlatEntity } from 'src/flats/entities/flat.enitity';
 
 import { testCreateFlatDto } from './test.data';
+import { UserModel } from '../src/users/schemas/user.schema';
+import { S3Service } from '../src/files/s3.service';
+import { UploadFileDto } from 'src/files/dto/upload-file.dto';
 
 describe('FlatsController (e2e)', () => {
   let app: INestApplication;
   let flatModel: Model<FlatModel>;
-
+  let userModel: Model<UserModel>;
+  let mockS3Service: S3Service;
   beforeEach(async () => {
+    mockS3Service = {
+      uploadFile: jest.fn(),
+      deleteFile: jest.fn(),
+    } as unknown as S3Service;
+
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
+      providers: [
+        {
+          provide: S3Service,
+          useValue: mockS3Service,
+        },
+      ],
     }).compile();
 
     app = moduleFixture.createNestApplication();
+
     flatModel = moduleFixture.get<Model<FlatModel>>(
       getModelToken(FlatModel.name),
+    );
+    userModel = moduleFixture.get<Model<UserModel>>(
+      getModelToken(UserModel.name),
     );
     await app.init();
 
@@ -32,6 +51,8 @@ describe('FlatsController (e2e)', () => {
   });
 
   afterEach(async () => {
+    await flatModel.deleteMany({});
+    await userModel.deleteMany({});
     await app.close();
   });
 
@@ -113,5 +134,35 @@ describe('FlatsController (e2e)', () => {
     await request(app.getHttpServer())
       .get(`/flats/${createdFlat.id}`)
       .expect(404);
+  });
+
+  // TODO: add test for files
+  it('/flats/:id/files (POST)', async () => {
+    const createdFlatResponse = await request(app.getHttpServer())
+      .post('/flats')
+      .send(testCreateFlatDto)
+      .expect(201);
+
+
+    const createdFlat = createdFlatResponse.body as FlatEntity;
+
+    const uploadFileDto: UploadFileDto = {
+      flatId: createdFlat.id,
+      originalName: 'test.jpg',
+      file: new File([], 'test.jpg'),
+      type: FileType.IMAGE,
+    };
+
+    await request(app.getHttpServer())
+      .post(`/flats/${createdFlat.id}/files`)
+      .send(uploadFileDto)
+      .expect(201);
+
+    // eslint-disable-next-line @typescript-eslint/unbound-method
+    expect(mockS3Service.uploadFile).toHaveBeenCalled();
+    // const createdFile = file.body as { url: string; width: number; height: number };
+    // expect(createdFile).toHaveProperty('url');
+    // expect(createdFile).toHaveProperty('width');
+    // expect(createdFile).toHaveProperty('height');
   });
 });

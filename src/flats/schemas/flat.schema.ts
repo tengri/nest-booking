@@ -1,13 +1,14 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Model } from 'mongoose';
+import { Types } from 'mongoose';
 import { FileModel } from 'src/files/schemas/file.schema';
 
-export type FlatDocument = FlatModel & Document;
+export type FlatDocument = FlatModel & Document<Types.ObjectId>;
 
 @Schema({
   timestamps: true,
 })
-export class FlatModel {
+export class FlatModel extends Model {
   @Prop({ required: true })
   name: string;
 
@@ -37,6 +38,9 @@ export class FlatModel {
 
   @Prop({ required: true })
   totalFloors: number;
+
+  @Prop({ required: true })
+  area: number;
 
   @Prop({ required: true, default: [] })
   tags: { name: string; icon?: string }[];
