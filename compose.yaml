@@ -2,8 +2,6 @@ version: '3.8'
 
 services:
   aigerus-backend:
-    env_file:
-      - .env
     build:
       context: .
       dockerfile: Dockerfile
@@ -13,6 +11,22 @@ services:
       - 3000:3000
     environment:
       - NODE_ENV=production
+      - MONGO_URI=mongodb://aigerus-mongo:27017/aigerus
+      - R2_ACCOUNT_ID=9322bd8493206ad2f8fafafcd2bcf56c
+      - R2_ACCESS_KEY_ID=b3331e69a9331c334766ac7d1e291a6c
+      - R2_SECRET_ACCESS_KEY=9dce29662b6c1f2db9ab5ae46fbdfb813e253c2961936224dc57d7128554d924
+      - R2_BUCKET_NAME=aigerus
+      - R2_PUBLIC_DOMAIN=files.aigerus.com
+
+    networks:
+      - aigerus-network
+
+  aigerus-mongo:
+    image: mongo:latest
+    container_name: aigerus-mongo
+    restart: always
+    ports:
+      - 27017:27017
     networks:
       - aigerus-network
 

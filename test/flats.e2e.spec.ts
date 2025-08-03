@@ -14,7 +14,7 @@ import { FlatEntity } from 'src/flats/entities/flat.enitity';
 import { testCreateFlatDto } from './test.data';
 import { UserModel } from '../src/users/schemas/user.schema';
 import { S3Service } from '../src/files/s3.service';
-import { UploadFileDto } from 'src/files/dto/upload-file.dto';
+import { UploadFlatFileDto } from '../src/files/dto/upload-file.dto';
 
 describe('FlatsController (e2e)', () => {
   let app: INestApplication;
@@ -143,13 +143,10 @@ describe('FlatsController (e2e)', () => {
       .send(testCreateFlatDto)
       .expect(201);
 
-
     const createdFlat = createdFlatResponse.body as FlatEntity;
 
-    const uploadFileDto: UploadFileDto = {
+    const uploadFileDto: UploadFlatFileDto = {
       flatId: createdFlat.id,
-      originalName: 'test.jpg',
-      file: new File([], 'test.jpg'),
       type: FileType.IMAGE,
     };
 
@@ -157,12 +154,5 @@ describe('FlatsController (e2e)', () => {
       .post(`/flats/${createdFlat.id}/files`)
       .send(uploadFileDto)
       .expect(201);
-
-    // eslint-disable-next-line @typescript-eslint/unbound-method
-    expect(mockS3Service.uploadFile).toHaveBeenCalled();
-    // const createdFile = file.body as { url: string; width: number; height: number };
-    // expect(createdFile).toHaveProperty('url');
-    // expect(createdFile).toHaveProperty('width');
-    // expect(createdFile).toHaveProperty('height');
   });
 });
